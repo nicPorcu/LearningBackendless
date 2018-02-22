@@ -41,4 +41,13 @@ public class Restaurant {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "name='" + name + '\'' +
+                ", rating=" + rating +
+                ", address='" + address + '\'' +
+                '}';
+    }
 }

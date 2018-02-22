@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -14,6 +15,9 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.social.SocialLoginDialog;
+
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     private TextView createAccount,loginButton;
@@ -66,7 +70,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void testDataRetrieval() {
+        Backendless.Persistence.of((Restaurant.class)).find(new AsyncCallback<List<Restaurant>>() {
+            @Override
+            public void handleResponse(List<Restaurant> response) {
+                Log.d("Look HERE", "handleResponse: "+response);
+            }
 
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.d("Fault", "handleFault: "+fault.getMessage());
+
+            }
+        });
     }
 
     @Override
