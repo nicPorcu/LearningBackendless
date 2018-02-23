@@ -1,8 +1,7 @@
 package com.example.nicolo.learningbackendless;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class RestaurantAdapter extends AppCompatActivity {
+import static com.example.nicolo.learningbackendless.RestaurantDirectory.TAG;
+
+public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.MyViewHolder>{
 
     private List<Restaurant> restaurantList;
     private Context context;
@@ -27,30 +28,39 @@ public class RestaurantAdapter extends AppCompatActivity {
     }
 
     @Override
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView= LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.restaurant_item,parent,false);
+        return new MyViewHolder(itemView,recyclerViewClickListener);
+    }
+
+    @Override
     public void onBindViewHolder(RestaurantAdapter.MyViewHolder holder, int position) {
-        String text=restaurantlist.get(position).getQuestion();
-        text = fixQuestion(text);
+        String text=restaurantList.get(position).getName();
+        holder.restaurantNameTextView.setText(text);
+        holder.addressTextView.setText(restaurantList.get(position).getAddress());
+        holder.ratingTextView.setText(restaurantList.get(position).getRating()+"");
+    }
 
-
-        holder.questionText.setText(text);
-        Log.d(TAG, "onBindViewHolder: ques"+questionlist.get(position).getCorrectAnswer());
+    @Override
+    public int getItemCount() {
+        return restaurantList.size();
     }
 
 
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView questionText;
-        public Button trueButton, falseButton;
+        private TextView restaurantNameTextView, addressTextView, ratingTextView;
+
         private RecyclerViewClickListener recyclerViewClickListener;
 
 
         public MyViewHolder(View itemView, RecyclerViewClickListener listener) {
 
             super(itemView);
-            questionText= itemView.findViewById(R.id.questionTextView);
-            trueButton=itemView.findViewById(R.id.true_button);
-            falseButton=itemView.findViewById(R.id.false_button);
-            trueButton.setOnClickListener(this);
-            falseButton.setOnClickListener(this);
+            restaurantNameTextView = itemView.findViewById(R.id.restaurant_name);
+            addressTextView=itemView.findViewById(R.id.address);
+            ratingTextView=itemView.findViewById(R.id.rating_textview);
+
             recyclerViewClickListener = listener;
 
         }
@@ -60,5 +70,7 @@ public class RestaurantAdapter extends AppCompatActivity {
         }
     }
 
-
+    public List<Restaurant> getRestaurantList() {
+        return restaurantList;
+    }
 }

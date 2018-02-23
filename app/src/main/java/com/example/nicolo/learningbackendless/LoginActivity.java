@@ -54,6 +54,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         loadingBar.setVisibility((View.GONE));
                         testDataRetrieval();
+                        intentThingTwo();
+
                     }
 
                     @Override
@@ -69,6 +71,8 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
+
     private void testDataRetrieval() {
         Backendless.Persistence.of((Restaurant.class)).find(new AsyncCallback<List<Restaurant>>() {
             @Override
@@ -78,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Log.d("Fault", "handleFault: "+fault.getMessage());
+                Log.d("Look Here", "handleFault: "+fault.getMessage());
 
             }
         });
@@ -94,6 +98,11 @@ public class LoginActivity extends AppCompatActivity {
     private void intentThing() {
         Intent i=new Intent(this, Registration.class);
         startActivityForResult(i,REGISTRATION_REQUEST);
+    }
+
+    private void intentThingTwo() {
+        Intent i=new Intent(this, RestaurantDirectory.class);
+        startActivity(i);
     }
 
     private void wireWidgets() {
