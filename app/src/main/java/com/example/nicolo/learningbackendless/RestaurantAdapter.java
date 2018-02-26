@@ -3,17 +3,23 @@ package com.example.nicolo.learningbackendless;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
+
 import java.util.List;
 
 import static com.example.nicolo.learningbackendless.RestaurantDirectory.TAG;
 
-public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.MyViewHolder>{
+public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.MyViewHolder> {
 
     private List<Restaurant> restaurantList;
     private Context context;
@@ -48,7 +54,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
     }
 
 
-    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener{
         private TextView restaurantNameTextView, addressTextView, ratingTextView;
 
         private RecyclerViewClickListener recyclerViewClickListener;
@@ -62,12 +68,46 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             ratingTextView=itemView.findViewById(R.id.rating_textview);
 
             recyclerViewClickListener = listener;
+            itemView.setOnCreateContextMenuListener(this);
 
         }
         @Override
         public void onClick(View view) {
             recyclerViewClickListener.onClick(view, getAdapterPosition());
         }
+
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+            menu.add("Delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    deleteObject(getAdapterPosition());
+                    return false;
+                }
+            });
+
+
+        }
+    }
+
+    private void deleteObject(int adapterPosition) {
+        Backendless.Persistence.of( Restaurant.class).remove( restaurantList.get(adapterPosition), new AsyncCallback<Long>(){
+
+            @Override
+            public void handleResponse(Long response) {
+                notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+
+            }
+        });
+
+
     }
 
     public List<Restaurant> getRestaurantList() {

@@ -54,7 +54,9 @@ public class LoginActivity extends AppCompatActivity {
 
                         loadingBar.setVisibility((View.GONE));
                         testDataRetrieval();
-                        intentThingTwo();
+
+                        String userId= response.getUserId();
+                        intentThingTwo(userId);
 
                     }
 
@@ -100,8 +102,9 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(i,REGISTRATION_REQUEST);
     }
 
-    private void intentThingTwo() {
+    private void intentThingTwo(String userId) {
         Intent i=new Intent(this, RestaurantDirectory.class);
+        i.putExtra("user_id", userId);
         startActivity(i);
     }
 
