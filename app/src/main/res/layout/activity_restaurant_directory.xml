@@ -7,6 +7,23 @@
     tools:context="com.example.nicolo.learningbackendless.RestaurantAdapter">
 
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/new_restaurant_button"
+        android:layout_width="70dp"
+        android:layout_height="61dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_menu_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.975"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recycle"
+        app:layout_constraintVertical_bias="0.982" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycle"
         android:layout_width="371dp"
@@ -15,6 +32,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

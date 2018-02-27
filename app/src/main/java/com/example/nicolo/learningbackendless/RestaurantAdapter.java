@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
@@ -83,6 +84,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             menu.add("Delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
+                    Toast.makeText(context, "onclick", Toast.LENGTH_SHORT).show();
                     deleteObject(getAdapterPosition());
                     return false;
                 }
@@ -92,18 +94,21 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
         }
     }
 
-    private void deleteObject(int adapterPosition) {
+    private void deleteObject(final int adapterPosition) {
         Backendless.Persistence.of( Restaurant.class).remove( restaurantList.get(adapterPosition), new AsyncCallback<Long>(){
 
             @Override
             public void handleResponse(Long response) {
+                restaurantList.remove(adapterPosition);
+                //notifyItemRemoved(adapterPosition);
                 notifyDataSetChanged();
+                Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
 
             }
 
             @Override
             public void handleFault(BackendlessFault fault) {
-
+                Toast.makeText(context, fault.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 

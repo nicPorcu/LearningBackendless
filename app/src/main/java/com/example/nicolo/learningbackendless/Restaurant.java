@@ -8,6 +8,7 @@ public class Restaurant {
     private String name;
     private int rating;
     private String address;
+    private String objectId;
 
     public Restaurant() {
     }
@@ -40,6 +41,14 @@ public class Restaurant {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 
     @Override

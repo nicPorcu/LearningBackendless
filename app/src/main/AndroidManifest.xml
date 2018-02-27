@@ -23,9 +23,11 @@
         <activity
             android:name=".Registration"
             android:parentActivityName=".LoginActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
-        <activity android:name=".RestaurantDirectory"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".RestaurantDirectory"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".RestaurantModifier"></activity>
     </application>
 
 </manifest>
