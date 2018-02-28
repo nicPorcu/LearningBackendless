@@ -1,7 +1,6 @@
 package com.example.nicolo.learningbackendless;
 
 import android.content.Intent;
-import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +14,6 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
-import com.backendless.social.SocialLoginDialog;
 
 import java.util.List;
 
@@ -53,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, user+" has logged on", Toast.LENGTH_SHORT).show();
 
                         loadingBar.setVisibility((View.GONE));
-                        testDataRetrieval();
+                        retrieveData();
 
                         String userId= response.getUserId();
                         intentThingTwo(userId);
@@ -75,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-    private void testDataRetrieval() {
+    private void retrieveData() {
         Backendless.Persistence.of((Restaurant.class)).find(new AsyncCallback<List<Restaurant>>() {
             @Override
             public void handleResponse(List<Restaurant> response) {

@@ -51,6 +51,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 
     @Override
     public int getItemCount() {
+
         return restaurantList.size();
     }
 
@@ -61,12 +62,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
         private RecyclerViewClickListener recyclerViewClickListener;
 
 
+
         public MyViewHolder(View itemView, RecyclerViewClickListener listener) {
 
             super(itemView);
             restaurantNameTextView = itemView.findViewById(R.id.restaurant_name);
             addressTextView=itemView.findViewById(R.id.address);
             ratingTextView=itemView.findViewById(R.id.rating_textview);
+            itemView.setOnClickListener(this);
 
             recyclerViewClickListener = listener;
             itemView.setOnCreateContextMenuListener(this);
@@ -84,7 +87,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             menu.add("Delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    Toast.makeText(context, "onclick", Toast.LENGTH_SHORT).show();
                     deleteObject(getAdapterPosition());
                     return false;
                 }
@@ -102,7 +104,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
                 restaurantList.remove(adapterPosition);
                 //notifyItemRemoved(adapterPosition);
                 notifyDataSetChanged();
-                Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
 
             }
 

@@ -15,7 +15,6 @@ import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
-import com.backendless.social.SocialLoginDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,9 @@ import java.util.List;
  */
 
 public class RestaurantDirectory extends AppCompatActivity {
-    private static final int REGISTRATION_REQUEST = 47;
+    private static final int RESTAURANT_MODIFIER_REQUEST_NEW = 47;
+    private static final int RESTAURANT_MODIFIER_REQUEST_UPDATE = 48;
+
     public List<Restaurant> restaurantList;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -54,13 +55,18 @@ public class RestaurantDirectory extends AppCompatActivity {
         RecyclerViewClickListener listener = new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
+                Intent i= new Intent(RestaurantDirectory.this, RestaurantModifier.class);
+                i.putExtra("restaurant_name", restaurantList.get(position).getName());
+                i.putExtra("restaurant_rating", restaurantList.get(position).getRating());
+                i.putExtra("restaurant_address", restaurantList.get(position).getName());
+                startActivityForResult(i, RESTAURANT_MODIFIER_REQUEST_UPDATE);
+
             }
 
         };
         newRestaurantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(RestaurantDirectory.this, "todo", Toast.LENGTH_SHORT).show();
                 anotherIntentThing();
 
 
@@ -70,24 +76,25 @@ public class RestaurantDirectory extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         //testDataManipulation();
-        testDataRetrieval();
+        retrieveData();
 
     }
 
     private void anotherIntentThing() {
         Intent i= new Intent(this, RestaurantModifier.class);
-        startActivityForResult(i, REGISTRATION_REQUEST);
+        startActivityForResult(i, RESTAURANT_MODIFIER_REQUEST_NEW);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode==RESULT_OK && requestCode==REGISTRATION_REQUEST){
-            restaurantList.add(new Restaurant(data.getStringExtra("restaurantNameText"),Integer.parseInt(data.getStringExtra("ratingText")),data.getStringExtra("restaurantAddressText")));
+        if(resultCode==RESULT_OK && requestCode== RESTAURANT_MODIFIER_REQUEST_NEW){
+            retrieveData();
+
             adapter.notifyDataSetChanged();
         }
     }
 
-    private void testDataRetrieval() {
+    private void retrieveData() {
         String whereClause="ownerId = '"+userId+"'";
         DataQueryBuilder queryBuilder=DataQueryBuilder.create();
         queryBuilder.setWhereClause(whereClause);
@@ -127,8 +134,11 @@ public class RestaurantDirectory extends AppCompatActivity {
             }
         });
 
+
+
         //Create
         //Update
         //Destroy
     }
+
 }

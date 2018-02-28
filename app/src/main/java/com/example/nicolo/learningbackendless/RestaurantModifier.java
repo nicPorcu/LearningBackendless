@@ -19,16 +19,28 @@ public class RestaurantModifier extends AppCompatActivity {
     private EditText restaurantNameText,restaurantAddressText, ratingText;
     private Button saveButton;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_modifier);
         wireWidgets();
+        Intent i=getIntent();
+        if(i.getStringExtra("restaurant_name")!=null){
+            restaurantNameText.setText(i.getStringExtra("restaurant_name"));
+            restaurantAddressText.setText(i.getStringExtra("restaurant_address"));
+            ratingText.setText(i.getStringExtra("restaurant_rating"));
+        }
+
+
+
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Restaurant restaurant=new Restaurant(restaurantNameText.getText().toString(),Integer.parseInt(ratingText.getText().toString()), restaurantAddressText.getText().toString());
                 Backendless.Persistence.save(restaurant, new AsyncCallback<Restaurant>() {
+
                     @Override
                     public void handleResponse(Restaurant response) {
                         Intent i=new Intent();
