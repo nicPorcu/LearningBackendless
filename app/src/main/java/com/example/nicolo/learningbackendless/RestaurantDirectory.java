@@ -34,6 +34,7 @@ public class RestaurantDirectory extends AppCompatActivity {
     public static final String TAG= "RestaurantDirectory";
     private String userId;
     private FloatingActionButton newRestaurantButton;
+    private int pos;
 
 
     @Override
@@ -57,8 +58,9 @@ public class RestaurantDirectory extends AppCompatActivity {
             public void onClick(View view, int position) {
                 Intent i= new Intent(RestaurantDirectory.this, RestaurantModifier.class);
                 i.putExtra("restaurant_name", restaurantList.get(position).getName());
-                i.putExtra("restaurant_rating", restaurantList.get(position).getRating());
-                i.putExtra("restaurant_address", restaurantList.get(position).getName());
+                i.putExtra("restaurant_rating", restaurantList.get(position).getRating()+"");
+                i.putExtra("restaurant_address", restaurantList.get(position).getAddress());
+                pos=position;
                 startActivityForResult(i, RESTAURANT_MODIFIER_REQUEST_UPDATE);
 
             }
@@ -92,6 +94,23 @@ public class RestaurantDirectory extends AppCompatActivity {
 
             adapter.notifyDataSetChanged();
         }
+        if(resultCode==RESULT_OK && requestCode==RESTAURANT_MODIFIER_REQUEST_UPDATE){
+            Backendless.Persistence.of( Restaurant.class).remove( restaurantList.get(pos), new AsyncCallback<Long>(){
+
+                @Override
+                public void handleResponse(Long response) {
+                    retrieveData();
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void handleFault(BackendlessFault fault) {
+                    Toast.makeText(RestaurantDirectory.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
+
     }
 
     private void retrieveData() {
